@@ -23,7 +23,8 @@ global $count2;
 global $randcolorpause;
 global $fadepause;
 global $debugmode;
-
+global $sounds;
+global $sounddir;
 
 $GLOBALS['cmd'] = '';
 $GLOBALS['count'] = 0;
@@ -35,14 +36,9 @@ $GLOBALS['inifile']= "rsnd.ini";
 $GLOBALS['debug'] = true;
 $GLOBALS['stop'] = false;
 
-$rl = '0';
-$gl = '0';
-$bl = '0';
-$orl = '99';
-$ogl = '99';
-$obl = '99';
 
 readini($GLOBALS['inifile']);
+
 if (isset($argv[1])) 
 {
 switch ($argv[1]) {
@@ -64,6 +60,8 @@ switch ($argv[1]) {
     showusage();
     exit;
 }
+
+
 /*************************************/
 function setsock()
 {
@@ -97,6 +95,7 @@ $STDIN = fopen('/dev/null', 'r');
 $STDOUT = fopen('/var/log/rgbled.log', 'wb');
 $STDERR = fopen('/var/log/rgblederror.log', 'wb');
 //dont't forget to create these log files
+loadlist();
     while (true) 
     {    
         checksock(); 
@@ -110,6 +109,7 @@ socket_close($GLOBALS['sock']);
 /*************************************/
 function maindebug()
 {
+    loadlist();
     while (true) 
     {    
         checksock(); 
@@ -170,13 +170,12 @@ function checksock()
                         socket_close($client);
                     }
                 break;
-            case '-yard':
-            case '-y':
+            case '-play':
                 if (isset($output[1])) 
                 {
-                    yardlight($output[1]);
+                    playsound($output[1]);
                 }else{
-                    $response = "Missing power number 0-10\n";
+                    $response = "Missing sound number\n";
                     socket_write($client, $response);
                     socket_close($client);
                 }
@@ -240,26 +239,19 @@ function checksock()
                 break;
             case '-l':
             case '-list':
-                $path    = './sound';
-                $files = scandir($path);
-                $response = $files ."\n";
+                $response = listfiles() ."\n";
                 socket_write($client, $response);
                 socket_close($client);
-                looptest();
-                break;    
-            case '-fade':
-            case '-f':
-                $response = "Fading\n\n";
+                break;  
+            case '-rl':
+                loadlist();
+                $response = "Loading\n\n";
                 socket_write($client, $response);
                 socket_close($client);
-                randomlight();
-                break;    
-            case '-strobe':
-                $response = "Strobing\n\n";
+                $response = listfiles() ."\n";
                 socket_write($client, $response);
                 socket_close($client);
-                strobeII();
-                break;        
+                break;             
             case 'kill':
                 $response = "Killing\n\n";
                 socket_write($client, $response);
@@ -300,20 +292,38 @@ function checksock()
     //socket_close($client);
 }
 
+
 //'*******************************************************************************
-function looptest()
+function loadlist()
 {
-    while(true)
-    {
-        echo "Sleeping....." .date('H:i:s') ."\n";
-        checksock();
-        if($GLOBALS['stop'])
-            {
-                $GLOBALS['stop'] = false;
-                return;
-            }
-        sleep(1);
-    }
+    echo "DIR " .$GLOBALS['ini_array']['location']['drv'] ."\n";
+    //exit;
+    $GLOBALS['sounds'] = scandir($GLOBALS['ini_array']['location']['drv'],1);
+    echo "SIZE " .sizeof($GLOBALS['sounds']) ."\n\n";
+
+}
+//'*******************************************************************************
+
+//'*******************************************************************************
+function listfiles()
+{
+    echo "DLDLDLDLDLDLDLD\n\n";
+    $list="";
+    for($i=0;$i < sizeof($GLOBALS['sounds']); $i++)
+        {
+            $list .= $i ." > " .$GLOBALS['sounds'][$i] ."\n";
+        }
+        return $list;
+}
+//'*******************************************************************************
+
+//'*******************************************************************************
+function playsound($snd)
+{
+    exec("sudo /usr/bin/killall mpg321 < /dev/null &");
+    echo "SOUND > " .$GLOBALS['sounddir'] ."/" .$GLOBALS['sounds'][$snd] ."\n";
+    
+    exec("/usr/bin/mpg321 " .$GLOBALS['sounddir'] ."/" .$GLOBALS['sounds'][$snd] ."< /dev/null &");
 }
 //'*******************************************************************************
 
@@ -709,6 +719,7 @@ function shwhelp()
     $hstring .= "Mandatory arguments\n";
     $hstring .= "  -h, \t This help\n";
     $hstring .= "  -l, \t List sounds\n";
+    $hstring .= "  -rl, \t Reload sound list\n";
     $hstring .= "  -c || color ,[.001-10],[.001-10],[.001-10],\t Set and turn on LED - Color values seperated by comma.\n";
     $hstring .= "  -setcolor,[.001-10],[.001-10],[.001-10] \t Sets the color\n";
     $hstring .= "  -stop, \t Stop the Strobe or the fade\n";
