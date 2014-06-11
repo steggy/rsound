@@ -171,11 +171,14 @@ function checksock()
                     }
                 break;
             case '-play':
+                    $response = "Trying " .$output[1] ."\n";
+                    socket_write($client, $response);
+                    socket_close($client);
                 if (isset($output[1])) 
                 {
                     playsound($output[1]);
                 }else{
-                    $response = "Missing sound number\n";
+                    $response = "Missing Sound number\n";
                     socket_write($client, $response);
                     socket_close($client);
                 }
@@ -237,6 +240,13 @@ function checksock()
                 socket_close($client);
                 looptest();
                 break;
+            case '-test':
+                    
+                    $response = "Testing \n";
+                    socket_write($client, $response);
+                    socket_close($client);
+                    looptest();
+                    break;
             case '-l':
             case '-list':
                 $response = listfiles() ."\n";
@@ -247,7 +257,7 @@ function checksock()
                 loadlist();
                 $response = "Loading\n\n";
                 socket_write($client, $response);
-                socket_close($client);
+                //socket_close($client);
                 $response = listfiles() ."\n";
                 socket_write($client, $response);
                 socket_close($client);
@@ -294,6 +304,23 @@ function checksock()
 
 
 //'*******************************************************************************
+function looptest()
+{
+    while(true)
+    {
+        echo "Sleeping....." .date('H:i:s') ."\n";
+        checksock();
+        if($GLOBALS['stop'])
+            {
+                $GLOBALS['stop'] = false;
+                return;
+            }
+        sleep(1);
+    }
+}
+//'*******************************************************************************
+
+//'*******************************************************************************
 function loadlist()
 {
     echo "DIR " .$GLOBALS['ini_array']['location']['drv'] ."\n";
@@ -320,10 +347,12 @@ function listfiles()
 //'*******************************************************************************
 function playsound($snd)
 {
+    $dr = $GLOBALS['ini_array']['location']['drv'];
     exec("sudo /usr/bin/killall mpg321 < /dev/null &");
     echo "SOUND > " .$GLOBALS['sounddir'] ."/" .$GLOBALS['sounds'][$snd] ."\n";
     
-    exec("/usr/bin/mpg321 " .$GLOBALS['sounddir'] ."/" .$GLOBALS['sounds'][$snd] ."< /dev/null &");
+    //exec("nohup /usr/bin/mpg321 -q " .$dr ."/" .$GLOBALS['sounds'][$snd] ."< /dev/null &");
+    exec("/usr/bin/mpg321 -q " .$dr ."/" .$GLOBALS['sounds'][$snd] ."> /dev/null 2>/dev/null &");
 }
 //'*******************************************************************************
 
