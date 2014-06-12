@@ -338,7 +338,9 @@ function listfiles()
     $list="";
     for($i=0;$i < sizeof($GLOBALS['sounds']); $i++)
         {
+            
             $list .= $i ." > " .$GLOBALS['sounds'][$i] ."\n";
+                
         }
         return $list;
 }
@@ -727,8 +729,8 @@ function write_ini_file($assoc_arr, $path, $has_sections=TRUE) {
 function showusage()
 {
     /*echo "rgbsock.php Rev ". $GLOBALS['revmajor'] ."." .$GLOBALS['revminor'] ."\n";*/
-    echo "rsound.php Rev 1 \n";
-    echo "Usage: rsound.php [option]...\n Using the Raspberry pi as a remote mp3 player\n";
+    echo "rsnd.php Rev 1 \n";
+    echo "Usage: rsnd.php [option]...\n Using the Raspberry pi as a remote mp3 player\n";
     echo "Mandatory arguments\n";
     echo "  -h, \t This help\n";
     echo "  -l, \t List local sounds\n";
@@ -749,19 +751,8 @@ function shwhelp()
     $hstring .= "  -h, \t This help\n";
     $hstring .= "  -l, \t List sounds\n";
     $hstring .= "  -rl, \t Reload sound list\n";
-    $hstring .= "  -c || color ,[.001-10],[.001-10],[.001-10],\t Set and turn on LED - Color values seperated by comma.\n";
-    $hstring .= "  -setcolor,[.001-10],[.001-10],[.001-10] \t Sets the color\n";
-    $hstring .= "  -stop, \t Stop the Strobe or the fade\n";
-    $hstring .= "  -strobe [.001-10] [.001-10] [.001-10] [x-duration] [y-count],\t Strobe LED - Color values seperated by space. \n";
-    $hstring .= "  -setstrobe\t Used for seting duration\n";
-    $hstring .= "  -y || -yard, [1-10] \t Turn on yard lights at power 1-10 \n";
-    $hstring .= "  -f || -fade\t Fade random colors\n";
-    $hstring .= "  -setfade\t Sets the fade duration\n";
-    $hstring .= "  -get [option]:\n";
-    $hstring .= "        fd: Fade duration\n";
-    $hstring .= "        sd: Strobe duration\n";
-    $hstring .= "         c: Colors\n";
-    $hstring .= "Pin numbers are set in the " .$GLOBALS['inifile'] ." file\n";      
+    $hstring .= "  -play [sound number], \t Play sound from list reference number\n";
+    $hstring .= "Sound directory set in the " .$GLOBALS['inifile'] ." file\n";      
     $hstring .= "\n\n";
     return $hstring;
 }
