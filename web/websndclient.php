@@ -17,8 +17,17 @@ if(isset($_POST['ww']))
 	}
 	$ec = implode(",",$zarr);
 	echo $eec .$ec;*/
-}else{
-	return "NOTHING";
+}
+if(isset($_POST['playit']))
+{
+	$cstring = "-play " .$_POST['ss'];
+	return $cstring;
+}
+
+if(isset($_POST['ss']))
+{
+	$cstring = "-play " .$_POST['ss'];
+	//return $cstring;
 }
 
 /*if(sizeof($argv) < 4 && !isset($argv[1]))
@@ -98,6 +107,7 @@ function sendcmd($cmd)
 	// trim the result and remove the starting ?
 	//$result = trim($result);
 	//$result = substr($result, 2);
+	 
 	 echo $result ."\n";
 
 	// now print it to the browser

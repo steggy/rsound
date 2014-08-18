@@ -10,32 +10,32 @@
 
         <script type="text/javascript">
             //For Ajax call
-            function mm(zone){ 
-		     //var selects = document.getElementById("vid");
+            function mm(){ 
+		     var selects = document.getElementById("p350");
 			//var red = document.getElementById("red");
 			//var green = document.getElementById("green");
 			//var blue = document.getElementById("blue");
-		     //var vv = selects.options[selects.selectedIndex].value;
+		     var vv = selects.options[selects.selectedIndex].value;
 		     //var rr = red.options[red.selectedIndex].value;
 		     //var gg = red.options[green.selectedIndex].value;
 		     //var bb = red.options[blue.selectedIndex].value;
                  //alert('This is vv: ' + vv);
                 $.ajax({
                     type: "POST",
-                    url: "asprink.php",
-                    data: "ss="+zone,
+                    url: "websndclient.php",
+                    data: "ss="+vv,
                     success:function(data){
                         //alert('This was sent back: ' + data);
                         //Next line adds the data from PHP into the DOM
                         //$('#div1').html(data);
                         //document.getElementById("button"+zone).background-color="green";
                         //s = data.responsetext;
-                        var myarray = data.split(",");				
+                        /*var myarray = data.split(",");				
                         $('#div1').html(myarray[0]);
                         document.getElementById('button1').style.backgroundColor=myarray[1];
                         document.getElementById('button2').style.backgroundColor=myarray[2];
                         document.getElementById('button3').style.backgroundColor=myarray[3];
-                        document.getElementById('button4').style.backgroundColor=myarray[4];
+                        document.getElementById('button4').style.backgroundColor=myarray[4];*/
                     }
                     });
                 }
@@ -94,6 +94,9 @@
         font-size:20px;
         }
         </style>
+        <script type="text/javascript">
+
+        </script>
 </head>
 <body onload="ww('status');" bgcolor=#F7DCB4>
 	<div id=divss style="width:300px;background-color:#9C9F84;border: 1px solid #5C755E;
@@ -102,12 +105,12 @@
 	box-shadow: 5px 5px 3px #888;">
         <span style="font-size:1em;">Halloween Sound Player</span>
 		<div id=div1 style="background-color:yellow;width:200px;">&nbsp;</div>
-        <form action="<?=$_SERVER['REQUEST_URI'];?>" method="get">
+        <!--<form action="<?=$_SERVER['REQUEST_URI'];?>" method="get">-->
         <select name=playit id='p350'></select>
-        <input type=submit>
-    </form>
+        <!--<input type=submit onclick="mm()">
+    </form>-->
         <br><br>
-		<!--<button id="button1" style=width:172px;height:55px;background-color:red; onclick="mm('1')">Front Lawn 1</button>-->
+		<button id="button1" style=width:172px;height:55px;background-color:red; onclick="mm()">Play</button>
 		
 		<br><br>
 		<button id="button4" style=width:72px;height:55px; onclick="ww('status')">Status</button>
