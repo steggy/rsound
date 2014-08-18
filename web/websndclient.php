@@ -1,20 +1,29 @@
-#! /usr/bin/php
-<?
-global $ini_file;
-global $ini_array;
-global $host;
-global $port;
 
-$GLOBALS['ini_file'] = "rsnd.ini";
+<?php
+//lets look for a post
 
-
-//lets look for arg
-//if(sizeof($argv) < 4 && !isset($argv[1]))
-if(!isset($argv[1]))
+if(isset($_POST['ww']))
 {
-	echo "usage: " .$argv[0] ." [command] [options]\n";
-	echo "Use rsnd.ini to configure server and port number\n";
-	echo "For help" .$argv[0] ." -h\n\n";
+	$cstring = "-lw";
+	/*$zarr = array("red","red","red","red");
+	$fs = checkflagstatus();
+	if ($fs > 0) 
+	{
+		$zarr[$fs -1] = "green";
+		
+		$eec =  "RUNNING,";
+	}else{
+		$eec =  "NOT RUNNING,";
+	}
+	$ec = implode(",",$zarr);
+	echo $eec .$ec;*/
+}else{
+	return "NOTHING";
+}
+
+/*if(sizeof($argv) < 4 && !isset($argv[1]))
+{
+	echo "usage: " .$argv[0] ." [server ip] [server port] [command] [options]\n";
 	die;
 }
 
@@ -22,30 +31,25 @@ if(strtolower($argv[1]) == '-h' || strtolower($argv[1]) == '--help')
 {
 	echo "usage: " .$argv[0] ." [server ip] [server port] [-h] list commands\n";
 	die;
-}	
-if (checkinifile())
-{
-	readini();
-	$GLOBALS['host'] = $GLOBALS['ini_array']['server']['ip'];
-	$GLOBALS['port'] = $GLOBALS['ini_array']['server']['port'];
-}else{
-	echo "Config file not found \n\n";
-	die;
-}
+}*/	
+	
+//$host = $argv[1];
+//$port = $argv[2];
+//testing we reset the above to static values
+$host = "172.16.33.24";
+$port = "9000";
 
-
-
-	for($i=1;$i < sizeof($argv); $i++)
+/*	for($i=3;$i < sizeof($argv); $i++)
 	{
-		if ($i == 1) 
+		if ($i == 3) 
 		{
 			$cstring=$argv[$i];
 		}else{
 			$cstring .= " " .$argv[$i];
 		}
-	} 
-     //$cstring .= " " .$argv[1];
-     sendcmd($cstring);
+	}*/ 
+
+sendcmd($cstring);
 
 /*switch ($argv[1]) {
     case 'test':
@@ -115,8 +119,6 @@ if (!file_exists($GLOBALS['ini_file']))
 	echo "With format:\n";
 	echo "[server]\nip=127.0.0.1\nport=9000\n\n\n";
 	die;
-}else{
-	return true;
 }
 }
 //*************************************************************************************

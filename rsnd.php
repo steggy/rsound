@@ -110,6 +110,7 @@ socket_close($GLOBALS['sock']);
 function maindebug()
 {
     loadlist();
+    weblistfiles();
     while (true) 
     {    
         checksock(); 
@@ -253,8 +254,14 @@ function checksock()
                 socket_write($client, $response);
                 socket_close($client);
                 break;  
+            case '-lw':
+                $response = weblistfiles() ."\n";
+                socket_write($client, $response);
+                socket_close($client);
+                break;      
             case '-rl':
                 loadlist();
+                weblistfiles();
                 $response = "Loading\n\n";
                 socket_write($client, $response);
                 //socket_close($client);
@@ -340,6 +347,21 @@ function listfiles()
         {
             
             $list .= $i ." > " .$GLOBALS['sounds'][$i] ."\n";
+                
+        }
+        return $list;
+}
+//'*******************************************************************************
+
+//'*******************************************************************************
+function weblistfiles()
+{
+    //echo "DLDLDLDLDLDLDLD\n\n";
+    $list="";
+    for($i=0;$i < sizeof($GLOBALS['sounds']); $i++)
+        {
+            
+            $list .= $GLOBALS['sounds'][$i] .",";
                 
         }
         return $list;
