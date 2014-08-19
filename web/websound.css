@@ -1,0 +1,28 @@
+
+
+#divss
+{
+width:300px;
+background-color:#9C9F84;
+border: 1px solid #5C755E;
+padding: 1em;
+border-radius: 10px;
+box-shadow: 5px 5px 3px #888;
+display:inline-block;
+}
+.divdiv
+{
+	background-color:yellow;
+	width:200px;
+}
+#button1
+{
+width:172px;
+height:55px;
+background-color:red;
+}
+#button4
+{
+width:72px;
+height:55px;
+} 

@@ -6,12 +6,19 @@
 <head>
 	<title>Remote Sound</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="websound.css" />
 	<script src="jquery.min.js"></script>
 
         <script type="text/javascript">
+            function addDays(theDate, days) 
+            {
+                return new Date(theDate.getTime() + days*24*60*60*1000);
+            }
+            //var newDate = addDays(new Date(), 5);
+
             //For Ajax call
-            function mm(){ 
-		     var selects = document.getElementById("p350");
+            function mm(ii){ 
+		     var selects = document.getElementById('p350'+ii);
 			//var red = document.getElementById("red");
 			//var green = document.getElementById("green");
 			//var blue = document.getElementById("blue");
@@ -19,11 +26,19 @@
 		     //var rr = red.options[red.selectedIndex].value;
 		     //var gg = red.options[green.selectedIndex].value;
 		     //var bb = red.options[blue.selectedIndex].value;
+             if(document.getElementById('serverip'+ii).value == "")
+                    {
+                        $('#div'+ii).html("SERVER ERROR");
+                        return;
+                    }
+                    var sip = document.getElementById('serverip'+ii).value;
+                    var newDate = addDays(new Date(), 15);
+                    document.cookie="server"+ii+"="+sip+"; expires="+newDate+";";
                  //alert('This is vv: ' + vv);
                 $.ajax({
                     type: "POST",
                     url: "websndclient.php",
-                    data: "ss="+vv,
+                    data: "ss="+vv+"&si="+sip,
                     success:function(data){
                         //alert('This was sent back: ' + data);
                         //Next line adds the data from PHP into the DOM
@@ -41,13 +56,21 @@
                 }
             function ww(ss){
                  //alert('This is vv: ' + vv);
+                 if(document.getElementById('serverip'+ss).value == "")
+                    {
+                        $('#div'+ss).html("SERVER ERROR");
+                        return;
+                    }
+                    var sip = document.getElementById('serverip'+ss).value;
+                    var newDate = addDays(new Date(), 15);
+                    document.cookie="server"+ss+"="+sip+"; expires="+newDate+";";
                 $.ajax({
                     type: "POST",
                     url: "websndclient.php",
-                    data: "ww="+ss,
+                    data: "ww="+ss+"&si="+sip,
                     success:function(data){
                         var myarray = data.split(",");				
-                        $('#div1').html(myarray[0]);
+                        $('#div'+ss).html(myarray[0]);
                         //var x = document.getElementById('p350');
                         //var option = document.createElement('option');
                         //var i
@@ -58,7 +81,7 @@
                         //x.add(option,x[i]);
                         //}​
                         
-                        var select = document.getElementById('p350');
+                        var select = document.getElementById('p350'+ss);
                         //var options = ["Asian", "Black"];
                         var i;
                         for (i = 0; i < myarray.length; i++) {
@@ -98,26 +121,41 @@
 
         </script>
 </head>
-<body onload="ww('status');" bgcolor=#F7DCB4>
-	<div id=divss style="width:300px;background-color:#9C9F84;border: 1px solid #5C755E;
-	padding: 1em;
-	border-radius: 10px;
-	box-shadow: 5px 5px 3px #888;">
+<!--<body onload="ww('status');" bgcolor=#F7DCB4>-->
+<body bgcolor=#F7DCB4>
+	<?
+    for ($i = 1; $i < 7; $i++)
+    {
+        ?>
+    <div id=divss>
         <span style="font-size:1em;">Halloween Sound Player</span>
-		<div id=div1 style="background-color:yellow;width:200px;">&nbsp;</div>
+		<div class="divdiv" id="div<?=$i;?>">&nbsp;</div>
         <!--<form action="<?=$_SERVER['REQUEST_URI'];?>" method="get">-->
-        <select name=playit id='p350'></select>
+        <select name=playit id='p350<?=$i;?>' size="4"></select>
         <!--<input type=submit onclick="mm()">
     </form>-->
         <br><br>
-		<button id="button1" style=width:172px;height:55px;background-color:red; onclick="mm()">Play</button>
+		<button id="button1" onclick="mm('<?=$i;?>')">Play</button>
 		
 		<br><br>
-		<button id="button4" style=width:72px;height:55px; onclick="ww('status')">Status</button>
+		<button id="button4" onclick="ww('<?=$i;?>')">Status</button>
         <br><br>
-        <form action="sprinksched.php" method=post>
-            <input type=submit value="Schedule">
-        </form>
+        <?
+        if (isset($_COOKIE["server" .$i])) 
+        {
+            $ssip = $_COOKIE["server" .$i];
+        }else{
+            $ssip ='';
+        }
+        ?>
+        Server IP <input name="serverip<?=$i;?>" id="serverip<?=$i;?>" type=text value="<?=$ssip;?>">
 	</div>
+    <?
+        if($i % 3 == 0)
+        {
+            echo "<br>";
+        }
+    }
+    ?>
 </body>
 </html>

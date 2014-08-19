@@ -45,7 +45,11 @@ if(strtolower($argv[1]) == '-h' || strtolower($argv[1]) == '--help')
 //$host = $argv[1];
 //$port = $argv[2];
 //testing we reset the above to static values
-$host = "172.16.33.24";
+if(isset($_POST['si']))
+{
+	$host = $_POST['si'];	
+}
+
 $port = "9000";
 
 /*	for($i=3;$i < sizeof($argv); $i++)
