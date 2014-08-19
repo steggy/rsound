@@ -122,16 +122,16 @@
         </script>
 </head>
 <!--<body onload="ww('status');" bgcolor=#F7DCB4>-->
-<body bgcolor=#F7DCB4>
+<body >
 	<?
     for ($i = 1; $i < 7; $i++)
     {
         ?>
     <div id=divss>
-        <span style="font-size:1em;">Halloween Sound Player</span>
+        <span style="font-size:1em;">Halloween Sound Player 2014</span>
 		<div class="divdiv" id="div<?=$i;?>">&nbsp;</div>
         <!--<form action="<?=$_SERVER['REQUEST_URI'];?>" method="get">-->
-        <select name=playit id='p350<?=$i;?>' size="4"></select>
+        <select name=playit id='p350<?=$i;?>' size="8"></select>
         <!--<input type=submit onclick="mm()">
     </form>-->
         <br><br>
@@ -148,7 +148,7 @@
             $ssip ='';
         }
         ?>
-        Server IP <input name="serverip<?=$i;?>" id="serverip<?=$i;?>" type=text value="<?=$ssip;?>">
+        Server IP <input class="ipserver" name="serverip<?=$i;?>" id="serverip<?=$i;?>" type=text value="<?=$ssip;?>">
 	</div>
     <?
         if($i % 3 == 0)
