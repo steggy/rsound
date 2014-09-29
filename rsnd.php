@@ -191,9 +191,9 @@ function checksock()
                 }
                 break; 
             case '-stopplay':
-                    //$response = "Trying " .$output[1] ."\n";
-                    //socket_write($client, $response);
-                    //socket_close($client);
+                    $response = "Stopping \n";
+                    socket_write($client, $response);
+                    socket_close($client);
                 //if (isset($output[1])) 
                 //{
                     stopsound();
