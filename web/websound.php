@@ -17,7 +17,7 @@
             //var newDate = addDays(new Date(), 5);
 
             //For Ajax call
-            function st(){ 
+            function st(ii){ 
              if(document.getElementById('serverip'+ii).value == "")
                     {
                         $('#div'+ii).html("SERVER ERROR");
@@ -36,7 +36,7 @@
                     success:function(data){
                         //alert('This was sent back: ' + data);
                         //Next line adds the data from PHP into the DOM
-                        //$('#div1').html(data);
+                        $('#divdiv').html(data);
                         //document.getElementById("button"+zone).background-color="green";
                         //s = data.responsetext;
                         /*var myarray = data.split(",");                
@@ -98,7 +98,7 @@
                     var sport = document.getElementById('serverport'+ss).value;
                     var newDate = addDays(new Date(), 15);
                     document.cookie="server"+ss+"="+sip+"; expires="+newDate+";";
-                    document.cookie="server"+ss+"="+sport+"; expires="+newDate+";";
+                    document.cookie="serverport"+ss+"="+sport+"; expires="+newDate+";";
                 $.ajax({
                     type: "POST",
                     url: "websndclient.php",
@@ -118,6 +118,7 @@
                         
                         var select = document.getElementById('p350'+ss);
                         //var options = ["Asian", "Black"];
+                        select.options.length = 0;
                         var i;
                         for (i = 0; i < myarray.length; i++) {
                             var opt = myarray[i];
@@ -170,7 +171,7 @@
         <!--<input type=submit onclick="mm()">
     </form>-->
         <br><br>
-		<button id="button1" onclick="mm('<?=$i;?>')">Play</button> <button id="button9" onclick="st()">STOP</button>
+		<button id="button1" onclick="mm('<?=$i;?>')">Play</button> <button id="button9" onclick="st('<?=$i;?>')">STOP</button>
 		
 		<br><br>
 		<button id="button4" onclick="ww('<?=$i;?>')">Status</button>
