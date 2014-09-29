@@ -43,6 +43,12 @@ if (isset($argv[1]))
 {
 switch ($argv[1]) {
     case '-r':
+        if (isset($argv[2])) {
+            echo "Port " .$argv[2] ."\n";
+            $GLOBALS['port'] = $argv[2];
+        }else{
+            $GLOBALS['port'] = 9000;
+        }
         setsock();
         $GLOBALS['debug'] = true;
         maindebug();
@@ -69,7 +75,7 @@ function setsock()
 set_time_limit (0);
 // Set the ip and port we will listen on
 $GLOBALS['address'] = '0.0.0.0';
-$GLOBALS['port'] = 9000;
+//$GLOBALS['port'] = 9000;
 // Create a TCP Stream socket
 $GLOBALS['sock'] = socket_create(AF_INET, SOCK_STREAM, 0);
 socket_set_option($GLOBALS['sock'], SOL_SOCKET, SO_SNDBUF, 25000);
@@ -184,6 +190,19 @@ function checksock()
                     socket_close($client);
                 }
                 break; 
+            case '-stopplay':
+                    //$response = "Trying " .$output[1] ."\n";
+                    //socket_write($client, $response);
+                    //socket_close($client);
+                //if (isset($output[1])) 
+                //{
+                    stopsound();
+                //}else{
+                //    $response = "Missing Sound number\n";
+                //    socket_write($client, $response);
+                //    socket_close($client);
+                //}
+                break;    
             case '-color';
             case '-c';
                 echo "In Color Case\n";
@@ -369,10 +388,22 @@ function weblistfiles()
 //'*******************************************************************************
 
 //'*******************************************************************************
+function stopsound()
+{
+    //$dr = $GLOBALS['ini_array']['location']['drv'];
+    exec("sudo /usr/bin/killall mpg321 < /dev/null &");
+    //echo "SOUND > " .$GLOBALS['sounddir'] ."/" .$GLOBALS['sounds'][$snd] ."\n";
+    
+    //exec("nohup /usr/bin/mpg321 -q " .$dr ."/" .$GLOBALS['sounds'][$snd] ."< /dev/null &");
+    //exec("/usr/bin/mpg321 -q " .$dr ."/" .$GLOBALS['sounds'][$snd] ."> /dev/null 2>/dev/null &");
+}
+//'*******************************************************************************
+
+//'*******************************************************************************
 function playsound($snd)
 {
     $dr = $GLOBALS['ini_array']['location']['drv'];
-    exec("sudo /usr/bin/killall mpg321 < /dev/null &");
+    //exec("sudo /usr/bin/killall mpg321 < /dev/null &");
     echo "SOUND > " .$GLOBALS['sounddir'] ."/" .$GLOBALS['sounds'][$snd] ."\n";
     
     //exec("nohup /usr/bin/mpg321 -q " .$dr ."/" .$GLOBALS['sounds'][$snd] ."< /dev/null &");
@@ -752,8 +783,8 @@ function showusage()
 {
     /*echo "rgbsock.php Rev ". $GLOBALS['revmajor'] ."." .$GLOBALS['revminor'] ."\n";*/
     echo "rsnd.php Rev 1 \n";
-    echo "Usage: rsnd.php [option]...\n Using the Raspberry pi as a remote mp3 player\n";
-    echo "Mandatory arguments\n";
+    echo "Usage: rsnd.php [option] [option] [option]...\n Using the Raspberry pi as a remote mp3 player\n";
+    echo "Mandatory first arguments\n";
     echo "  -h, \t This help\n";
     echo "  -l, \t List local sounds\n";
     echo "  -r, \t Used for debuging from console\n";

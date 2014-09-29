@@ -17,6 +17,37 @@
             //var newDate = addDays(new Date(), 5);
 
             //For Ajax call
+            function st(){ 
+             if(document.getElementById('serverip'+ii).value == "")
+                    {
+                        $('#div'+ii).html("SERVER ERROR");
+                        return;
+                    }
+                    var sip = document.getElementById('serverip'+ii).value;
+                    var sport = document.getElementById('serverport'+ii).value;
+                    var newDate = addDays(new Date(), 15);
+                    document.cookie="server"+ii+"="+sip+"; expires="+newDate+";";
+                    document.cookie="serverport"+ii+"="+sport+"; expires="+newDate+";";
+                 //alert('This is vv: ' + vv);
+                $.ajax({
+                    type: "POST",
+                    url: "websndclient.php",
+                    data: "st='stop'&si="+sip+"&sp="+sport,
+                    success:function(data){
+                        //alert('This was sent back: ' + data);
+                        //Next line adds the data from PHP into the DOM
+                        //$('#div1').html(data);
+                        //document.getElementById("button"+zone).background-color="green";
+                        //s = data.responsetext;
+                        /*var myarray = data.split(",");                
+                        $('#div1').html(myarray[0]);
+                        document.getElementById('button1').style.backgroundColor=myarray[1];
+                        document.getElementById('button2').style.backgroundColor=myarray[2];
+                        document.getElementById('button3').style.backgroundColor=myarray[3];
+                        document.getElementById('button4').style.backgroundColor=myarray[4];*/
+                    }
+                    });
+                }
             function mm(ii){ 
 		     var selects = document.getElementById('p350'+ii);
 			//var red = document.getElementById("red");
@@ -32,13 +63,15 @@
                         return;
                     }
                     var sip = document.getElementById('serverip'+ii).value;
+                    var sport = document.getElementById('serverport'+ii).value;
                     var newDate = addDays(new Date(), 15);
                     document.cookie="server"+ii+"="+sip+"; expires="+newDate+";";
+                    document.cookie="serverport"+ii+"="+sport+"; expires="+newDate+";";
                  //alert('This is vv: ' + vv);
                 $.ajax({
                     type: "POST",
                     url: "websndclient.php",
-                    data: "ss="+vv+"&si="+sip,
+                    data: "ss="+vv+"&si="+sip+"&sp="+sport,
                     success:function(data){
                         //alert('This was sent back: ' + data);
                         //Next line adds the data from PHP into the DOM
@@ -62,12 +95,14 @@
                         return;
                     }
                     var sip = document.getElementById('serverip'+ss).value;
+                    var sport = document.getElementById('serverport'+ss).value;
                     var newDate = addDays(new Date(), 15);
                     document.cookie="server"+ss+"="+sip+"; expires="+newDate+";";
+                    document.cookie="server"+ss+"="+sport+"; expires="+newDate+";";
                 $.ajax({
                     type: "POST",
                     url: "websndclient.php",
-                    data: "ww="+ss+"&si="+sip,
+                    data: "ww="+ss+"&si="+sip+"&sp="+sport,
                     success:function(data){
                         var myarray = data.split(",");				
                         $('#div'+ss).html(myarray[0]);
@@ -106,14 +141,14 @@
         {
         border: 1px solid #5C755E;
         border-radius: 6px;
-        box-shadow: 5px 5px 3px #888;
+        box-shadow: 5px 5px 3px #856270;
         }
 
         button
         {
         border: 1px solid #5C755E;
         border-radius: 6px;
-        box-shadow: 5px 5px 3px #888;
+        box-shadow: 3px 3px 3px #856270;
         font-size:20px;
         }
         </style>
@@ -135,7 +170,7 @@
         <!--<input type=submit onclick="mm()">
     </form>-->
         <br><br>
-		<button id="button1" onclick="mm('<?=$i;?>')">Play</button>
+		<button id="button1" onclick="mm('<?=$i;?>')">Play</button> <button id="button9" onclick="st()">STOP</button>
 		
 		<br><br>
 		<button id="button4" onclick="ww('<?=$i;?>')">Status</button>
@@ -147,8 +182,15 @@
         }else{
             $ssip ='';
         }
+        if (isset($_COOKIE["serverport" .$i])) 
+        {
+            $ssport = $_COOKIE["serverport" .$i];
+        }else{
+            $ssport ='';
+        }
         ?>
-        Server IP <input class="ipserver" name="serverip<?=$i;?>" id="serverip<?=$i;?>" type=text value="<?=$ssip;?>">
+        S-IP <input class="ipserver" name="serverip<?=$i;?>" id="serverip<?=$i;?>" type=text value="<?=$ssip;?>">
+        Port: <input size =4 class="ipserver" name="serverport<?=$i;?>" id="serverport<?=$i;?>" type=text value="<?=$ssport;?>">
 	</div>
     <?
         if($i % 3 == 0)

@@ -30,6 +30,12 @@ if(isset($_POST['ss']))
 	//return $cstring;
 }
 
+if(isset($_POST['st']))
+{
+	$cstring = "-stopplay " .$_POST['st'];
+	//return $cstring;
+}
+
 /*if(sizeof($argv) < 4 && !isset($argv[1]))
 {
 	echo "usage: " .$argv[0] ." [server ip] [server port] [command] [options]\n";
@@ -49,8 +55,12 @@ if(isset($_POST['si']))
 {
 	$host = $_POST['si'];	
 }
-
-$port = "9000";
+if (isset($_POST['sport'])) 
+{
+	$port = $_POST['sport'];
+}else{
+	$port = "9000";
+}
 
 /*	for($i=3;$i < sizeof($argv); $i++)
 	{
